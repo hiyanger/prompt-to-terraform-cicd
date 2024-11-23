@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWSサービスをつくろう</title>
+  <style>
+    /* 全体のスタイル */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #FFF8F0;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #FF9900;
+      margin-bottom: 10px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    img {
+      width: 150px;
+      height: auto;
+      margin-bottom: 20px;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 150px;
+      border: 2px solid #FF9900;
+      border-radius: 15px;
+      padding: 10px;
+      font-size: 1rem;
+      background-color: #FFFBF5;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      outline: none;
+      resize: none;
+    }
+
+    textarea:focus {
+      border-color: #CC7700;
+      box-shadow: 0 4px 12px rgba(204, 119, 0, 0.3);
+    }
+
+    button {
+      background-color: #FF9900;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #CC7700;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+      background-color: #B25F00;
+      transform: scale(0.97);
+    }
+
+    .response {
+      display: none;
+      max-width: 600px;
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px solid #FF9900;
+      border-radius: 15px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      color: #333;
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>さあ、あなたの作りたい<br>AWS サービスを教えなさい！！</h1>
+    <img src="https://XXX.png" alt="神様のイメージ">
+    <textarea id="prompt" placeholder="ここに書くのです..."></textarea>
+    <button onclick="generateCode()">リソースを作成する</button>
+    <div id="response" class="response"></div>
+  </div>
+
+  <script>
+    async function generateCode() {
+      const prompt = document.getElementById("prompt").value;
+      const responseDiv = document.getElementById("response");
+
+      // 初期状態をリセット
+      responseDiv.style.display = "none";
+      responseDiv.innerText = "";
+
+      if (!prompt) {
+        alert("Please enter a prompt!");
+        return;
+      }
+
+      const apiUrl = "https://XXX/test"; // API Gatewayのエンドポイント
+
+      try {
+        // 「リソースの作成準備中」を表示
+        responseDiv.innerText = "リソースの作成準備中です...";
+        responseDiv.style.display = "block";
+
+        // APIを呼び出し
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Lambdaの正常終了メッセージを固定表示
+        responseDiv.innerText = "デプロイするリソースの準備ができました☺️";
+      } catch (error) {
+        // エラーを表示
+        responseDiv.innerText = "Error: " + error.message;
+      } finally {
+        responseDiv.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
